@@ -6,9 +6,19 @@ from datetime import datetime
 # -----------------------------
 # Load Model and Encoders
 # -----------------------------
-model = joblib.load("/content/drive/MyDrive/Road_Accident_Severity_Prediction/model/random_forest_model.pkl")
-encoders = joblib.load("/content/drive/MyDrive/Road_Accident_Severity_Prediction/model/label_encoders.pkl")
+import os
 
+# Get the path of the current app directory, then step up one level to the root directory
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# -----------------------------
+# Load Model and Encoders
+# -----------------------------
+model_path = os.path.join(BASE_DIR, "model", "random_forest_model.pkl")
+encoders_path = os.path.join(BASE_DIR, "model", "label_encoders.pkl")
+
+model = joblib.load(model_path)
+encoders = joblib.load(encoders_path)
 # -----------------------------
 # Streamlit Page Configuration
 # -----------------------------
@@ -235,7 +245,6 @@ if st.button("🚀 Predict Severity"):
 
     prediction = model.predict(input_data)
 
-    severity = encoders["accident_severity"].inverse_transform(prediction)[0]
     severity = encoders["accident_severity"].inverse_transform(prediction)[0]
         # ---------------------------------
     # Display Prediction
